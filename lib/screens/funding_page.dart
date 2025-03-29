@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:edulinkhub/widget/app_drawer.dart';
 
 class FundingPage extends StatelessWidget {
   @override
@@ -10,14 +11,27 @@ class FundingPage extends StatelessWidget {
           // User Profile Button
           IconButton(
             icon: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/profile.png'), // Add profile image
+              backgroundImage: AssetImage('assets/images/profile.jpg'), // Add profile image
             ),
             onPressed: () {
-              // Navigate to user profile page
+              // Navigate to user profile page when profile image is tapped
+              Navigator.pushNamed(
+                context,
+                '/profile',
+                arguments: {
+                  'fullName': 'John Doe',  // Example data
+                  'email': 'johndoe@example.com',
+                  'phoneNumber': '+123456789',
+                },
+              );
             },
-          ),
+          )
+
         ],
+
+        backgroundColor: Colors.blue.shade300,
       ),
+      drawer: AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

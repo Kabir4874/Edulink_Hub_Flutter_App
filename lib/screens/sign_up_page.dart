@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:edulinkhub/screens/otp_verification_page.dart';
 
 
 
@@ -31,15 +32,16 @@ class _SignUpPageState extends State<SignUpPage> {
         _isLoading = false;
       });
 
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sign Up Successful!')),
+      // Navigate to OTP Verification Page after sign-up
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OTPVerificationPage(phoneNumber: _phoneNumber),
+        ),
       );
-
-      // Navigate to the Sign In page
-      Navigator.pushReplacementNamed(context, '/');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

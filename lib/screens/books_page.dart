@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:edulinkhub/widget/app_drawer.dart';
+import 'package:edulinkhub/screens/payment_page.dart';
+
+
+
 
 
 class Book {
   final String id;
   final String name;
-  final String description;
   final String imageUrl;
   final double price;
+  final String description;
   final List<String> reviews;
+  bool isPurchased; // Track purchase status
 
   Book({
     required this.id,
     required this.name,
-    required this.description,
     required this.imageUrl,
     required this.price,
+    required this.description,
     required this.reviews,
+    this.isPurchased = false, // Default as not purchased
   });
 }
 
@@ -65,16 +72,30 @@ class BooksPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Books & PDFs'),
         actions: [
+          // User Profile Button
           IconButton(
             icon: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/profile.png'),
+              backgroundImage: AssetImage('assets/images/profile.jpg'), // Add profile image
             ),
             onPressed: () {
-              // Navigate to user profile page
+              // Navigate to user profile page when profile image is tapped
+              Navigator.pushNamed(
+                context,
+                '/profile',
+                arguments: {
+                  'fullName': 'John Doe',  // Example data
+                  'email': 'johndoe@example.com',
+                  'phoneNumber': '+123456789',
+                },
+              );
             },
-          ),
+          )
+
         ],
+
+        backgroundColor: Colors.blue.shade300,
       ),
+      drawer: AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -158,16 +179,44 @@ class BooksPage extends StatelessWidget {
     );
   }
 }
-class BookDescriptionPage extends StatelessWidget {
+
+
+class BookDescriptionPage extends StatefulWidget {
   final Book book;
 
   BookDescriptionPage({required this.book});
 
   @override
+  _BookDescriptionPageState createState() => _BookDescriptionPageState();
+}
+
+class _BookDescriptionPageState extends State<BookDescriptionPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(book.name),
+        title: Text('Books & PDFs'),
+        actions: [
+          // User Profile Button
+          IconButton(
+            icon: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/profile.jpg'),
+            ),
+            onPressed: () {
+              // Navigate to user profile page
+              Navigator.pushNamed(
+                context,
+                '/profile',
+                arguments: {
+                  'fullName': 'John Doe',
+                  'email': 'johndoe@example.com',
+                  'phoneNumber': '+123456789',
+                },
+              );
+            },
+          )
+        ],
+        backgroundColor: Colors.blue.shade300,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -176,7 +225,7 @@ class BookDescriptionPage extends StatelessWidget {
           children: [
             // Book Image
             Image.network(
-              book.imageUrl,
+              widget.book.imageUrl,
               height: 300,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -184,19 +233,19 @@ class BookDescriptionPage extends StatelessWidget {
             SizedBox(height: 16),
             // Book Name
             Text(
-              book.name,
+              widget.book.name,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
             // Book Price
             Text(
-              'Price: \$${book.price.toStringAsFixed(2)}',
+              'Price: \$${widget.book.price.toStringAsFixed(2)}',
               style: TextStyle(fontSize: 18, color: Colors.green),
             ),
             SizedBox(height: 16),
             // Book Description
             Text(
-              book.description,
+              widget.book.description,
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 16),
@@ -208,7 +257,7 @@ class BookDescriptionPage extends StatelessWidget {
             SizedBox(height: 8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: book.reviews.map((review) {
+              children: widget.book.reviews.map((review) {
                 return Text(
                   '- $review',
                   style: TextStyle(fontSize: 16),
@@ -216,15 +265,34 @@ class BookDescriptionPage extends StatelessWidget {
               }).toList(),
             ),
             SizedBox(height: 16),
-            // Buy Now Button
+            // Buy Now or Read Now Button
             Center(
-              child: ElevatedButton(
+              child: widget.book.isPurchased
+                  ? ElevatedButton(
                 onPressed: () {
-                  // Navigate to the book reading page after purchase
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => BookReadingPage(book: book),
+                      builder: (context) => BookReadingPage(book: widget.book),
+                    ),
+                  );
+                },
+                child: Text('Read Now'),
+              )
+                  : ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaymentPage(
+                        bookName: widget.book.name,
+                        price: widget.book.price,
+                        onPaymentSuccess: () {
+                          setState(() {
+                            widget.book.isPurchased = true;
+                          });
+                        },
+                      ),
                     ),
                   );
                 },
@@ -237,6 +305,12 @@ class BookDescriptionPage extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+// Book Reading Page (After purchase)
 class BookReadingPage extends StatelessWidget {
   final Book book;
 
