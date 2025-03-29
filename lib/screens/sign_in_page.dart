@@ -1,11 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-=======
->>>>>>> c298b122af1cf48bae3a7dea1c2179d9b9a64d94
 
 class SignInPage extends StatefulWidget {
   @override
@@ -102,7 +99,6 @@ class _SignInPageState extends State<SignInPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-<<<<<<< HEAD
                   'assets/images/logo.png',
                   height: 300,
                   width: 300,
@@ -125,73 +121,11 @@ class _SignInPageState extends State<SignInPage> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email or username';
-=======
-                  'assets/images/logo.png', // Replace with your logo path
-                  height: 300, // Adjust height as needed
-                  width: 300, // Adjust width as needed
-                ),
-                SizedBox(height: 10),
-                // Email or Username Field
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email or User Name',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email or username';
-                    }
-                    // Validate email format
-                    final emailRegExp = RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
-                    if (!emailRegExp.hasMatch(value)) {
-                      return 'Please enter a valid email address';
                     }
                     return null;
                   },
                 ),
                 SizedBox(height: 16.0),
-
-                // Password Field
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: !_isPasswordVisible,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    // Password validation: at least 6 characters, one uppercase letter, one number, one special character
-                    final passwordRegExp = RegExp(
-                        r'^(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)_\+\-=\[\]\{\};:\'",<>\./?\\|`~]).{6,}"
-                            );
-                    if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
-                    }
-                    if (!passwordRegExp.hasMatch(value)) {
-                      return 'Password must contain at least 1 uppercase letter, 1 number, and 1 special character';
->>>>>>> c298b122af1cf48bae3a7dea1c2179d9b9a64d94
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 16.0),
-<<<<<<< HEAD
                 TextFormField(
                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
@@ -223,17 +157,12 @@ class _SignInPageState extends State<SignInPage> {
                   },
                 ),
                 SizedBox(height: 16.0),
-=======
-
-                // Forgot Password link
->>>>>>> c298b122af1cf48bae3a7dea1c2179d9b9a64d94
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/forgotPassword');
                   },
                   child: Text('Forget Password?'),
                 ),
-<<<<<<< HEAD
                 SizedBox(height: 8.0),
                 _isLoading
                     ? CircularProgressIndicator()
@@ -247,56 +176,25 @@ class _SignInPageState extends State<SignInPage> {
                 SizedBox(height: 16.0),
                 Text('Or sign in with'),
                 SizedBox(height: 16.0),
-=======
-
-                // Sign-in Button or Loading Indicator
-                _isLoading
-                    ? CircularProgressIndicator()
-                    : ElevatedButton(
-                  onPressed: _signIn,
-                  child: Text('Log In'),
-                ),
-                SizedBox(height: 16.0),
-
-                /*// Or sign in with
-                Text('Or sign in with'),
-                SizedBox(height: 16.0),
-
-                // Social Media Sign-in Buttons (Google/Facebook)
->>>>>>> c298b122af1cf48bae3a7dea1c2179d9b9a64d94
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-<<<<<<< HEAD
                       icon: Image.asset('assets/images/google.png', height: 24),
-=======
-                      icon: Image.asset('assets/images/google.png', height: 24), // Google icon
->>>>>>> c298b122af1cf48bae3a7dea1c2179d9b9a64d94
                       onPressed: () {
                         // Handle Google sign-in
                       },
                     ),
                     IconButton(
-<<<<<<< HEAD
                       icon:
                           Image.asset('assets/images/facebook.png', height: 24),
-=======
-                      icon: Image.asset('assets/images/facebook.png', height: 24), // Facebook icon
->>>>>>> c298b122af1cf48bae3a7dea1c2179d9b9a64d94
                       onPressed: () {
                         // Handle Facebook sign-in
                       },
                     ),
                   ],
                 ),
-<<<<<<< HEAD
                 SizedBox(height: 16.0),
-=======
-                SizedBox(height: 16.0),*/
-
-                // Sign-up Link
->>>>>>> c298b122af1cf48bae3a7dea1c2179d9b9a64d94
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/signup');
@@ -310,7 +208,6 @@ class _SignInPageState extends State<SignInPage> {
       ),
     );
   }
-<<<<<<< HEAD
 
   @override
   void dispose() {
@@ -318,6 +215,4 @@ class _SignInPageState extends State<SignInPage> {
     _passwordController.dispose();
     super.dispose();
   }
-=======
->>>>>>> c298b122af1cf48bae3a7dea1c2179d9b9a64d94
 }
