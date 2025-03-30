@@ -6,6 +6,9 @@ import 'screens/home_page.dart'; // Home page import
 import 'screens/admission_page.dart'; // Admission page import
 import 'screens/funding_page.dart'; // Funding page import
 import 'screens/books_page.dart'; // Books page import
+import 'screens/profile_page.dart';
+import 'screens/payment_page.dart';
+
 
 void main() {
   runApp(EdulearnApp());
@@ -29,6 +32,18 @@ class EdulearnApp extends StatelessWidget {
         '/admission': (context) => AdmissionPage(), // Placeholder for Admission Page
         '/funding': (context) => FundingPage(), // Placeholder for Funding Page
         '/books': (context) => BooksPage(), // Placeholder for Books Page
+        '/profile': (context) => ProfilePage(
+          fullName: "John Doe", // Replace with actual data
+          email: "johndoe@example.com", // Replace with actual data
+          phoneNumber: "+123456789", // Replace with actual data
+        ),
+        '/payment': (context) => PaymentPage(
+          bookName: 'Default Book',
+          price: 0.0, onPaymentSuccess: () {
+
+        },
+        ),
+
       },
     );
   }
