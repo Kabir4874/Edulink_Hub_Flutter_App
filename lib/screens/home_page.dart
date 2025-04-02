@@ -80,7 +80,7 @@ class HomePage extends StatelessWidget {
                     context,
                     'Funding Support',
                     Icons.money,
-                    '/funding',
+                    '/subscription',
                   ),
                   SizedBox(height: 20),
                   _buildButton(

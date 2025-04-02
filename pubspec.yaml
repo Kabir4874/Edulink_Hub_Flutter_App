@@ -36,6 +36,7 @@ dependencies:
   url_launcher:
   image_picker:
   cupertino_icons:
+  fl_chart: ^0.63.0  # Use the latest version available
 
 dev_dependencies:
   flutter_test:

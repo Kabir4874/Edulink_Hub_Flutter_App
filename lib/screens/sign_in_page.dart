@@ -174,27 +174,13 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                       ),
                 SizedBox(height: 16.0),
-                Text('Or sign in with'),
-                SizedBox(height: 16.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      icon: Image.asset('assets/images/google.png', height: 24),
-                      onPressed: () {
-                        // Handle Google sign-in
-                      },
-                    ),
-                    IconButton(
-                      icon:
-                          Image.asset('assets/images/facebook.png', height: 24),
-                      onPressed: () {
-                        // Handle Facebook sign-in
-                      },
-                    ),
-                  ],
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/admin-signin');
+                  },
+                  child: Text('Sign in as Admin'),
                 ),
-                SizedBox(height: 16.0),
+                //for admin sign in
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/signup');
