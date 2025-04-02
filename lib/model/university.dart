@@ -6,6 +6,7 @@ class University {
   final String applyLink;
   final String admitCardDownload;
   final List<String> examUnits;
+  final String imageUrl; // Ensure this is included
 
   University({
     required this.name,
@@ -15,5 +16,19 @@ class University {
     required this.applyLink,
     required this.admitCardDownload,
     required this.examUnits,
+    required this.imageUrl, // Initialize image URL
   });
+
+  factory University.fromJson(Map<String, dynamic> json) {
+    return University(
+      name: json['name'],
+      location: json['location'],
+      applyDate: json['applyDate'],
+      deadline: json['deadline'],
+      applyLink: json['applyLink'],
+      admitCardDownload: json['admitCardDownload'],
+      examUnits: List<String>.from(json['examUnits']),
+      imageUrl: json['imageUrl'], // Ensure this value is being set
+    );
+  }
 }
