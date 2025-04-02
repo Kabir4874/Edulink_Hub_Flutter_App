@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
+import 'dart:convert';
+
 import 'package:edulinkhub/screens/otp_verification_page.dart';
-
-
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -17,31 +18,70 @@ class _SignUpPageState extends State<SignUpPage> {
   final _confirmPasswordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
-  String _phoneNumber = ''; // Store the complete phone number
+  String _phoneNumber = '';
+  String? _errorMessage;
 
-  void _signUp() async {
+  Future<void> _signUp() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
+        _errorMessage = null;
       });
 
-      // Simulate a network call for sign-up
-      await Future.delayed(Duration(seconds: 2));
+      try {
+        final response = await http.post(
+          Uri.parse('https://edulink-hub-backend.onrender.com/auth/register'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'name': _fullNameController.text.trim(),
+            'email': _emailController.text.trim(),
+            'password': _passwordController.text,
+            'phoneNumber': _phoneNumber,
+          }),
+        );
 
-      setState(() {
-        _isLoading = false;
-      });
+        final responseData = jsonDecode(response.body);
 
-      // Navigate to OTP Verification Page after sign-up
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OTPVerificationPage(phoneNumber: _phoneNumber),
-        ),
-      );
+        if (response.statusCode == 201) {
+          final data = await http.post(
+            Uri.parse('https://edulink-hub-backend.onrender.com/auth/send-otp'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              'email': _emailController.text.trim(),
+            }),
+          );
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OTPVerificationPage(
+                email: _emailController.text.trim(),
+              ),
+            ),
+          );
+        } else {
+          // Handle error from server
+          setState(() {
+            _errorMessage = responseData['message'] ??
+                'Registration failed. Please try again.';
+          });
+        }
+      } catch (e) {
+        // Handle network errors
+        setState(() {
+          _errorMessage = 'Network error. Please check your connection.';
+        });
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -57,13 +97,23 @@ class _SignUpPageState extends State<SignUpPage> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                // Add Logo Here
                 Image.asset(
-                  'assets/images/logo.png', // Replace with your logo path
-                  height: 200, // Adjust height as needed
-                  width: 200, // Adjust width as needed
+                  'assets/images/logo.png',
+                  height: 200,
+                  width: 200,
                 ),
-                SizedBox(height: 5), // Add space between logo and form
+                SizedBox(height: 5),
+
+                // Error message display
+                if (_errorMessage != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: Text(
+                      _errorMessage!,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+
                 TextFormField(
                   controller: _fullNameController,
                   decoration: InputDecoration(
@@ -79,6 +129,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                 ),
                 SizedBox(height: 16.0),
+
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -90,13 +141,15 @@ class _SignUpPageState extends State<SignUpPage> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
                     }
-                    if (!value.contains('@')) {
+                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                        .hasMatch(value)) {
                       return 'Please enter a valid email';
                     }
                     return null;
                   },
                 ),
                 SizedBox(height: 16.0),
+
                 TextFormField(
                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
@@ -106,7 +159,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
@@ -126,6 +181,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                 ),
                 SizedBox(height: 16.0),
+
                 TextFormField(
                   controller: _confirmPasswordController,
                   obscureText: !_isPasswordVisible,
@@ -145,16 +201,15 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                 ),
                 SizedBox(height: 16.0),
-                // Phone Number Section with Country Code Picker
+
                 IntlPhoneField(
                   decoration: InputDecoration(
                     labelText: 'Phone Number',
                     border: OutlineInputBorder(),
                   ),
-                  initialCountryCode: 'US', // Default country code
+                  initialCountryCode: 'US',
                   onChanged: (phone) {
-                    _phoneNumber = phone.completeNumber; // Store the complete phone number
-                    print(_phoneNumber); // Print the complete phone number for debugging
+                    _phoneNumber = phone.completeNumber;
                   },
                   validator: (value) {
                     if (value == null || value.number.isEmpty) {
@@ -164,13 +219,18 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                 ),
                 SizedBox(height: 16.0),
+
                 _isLoading
                     ? CircularProgressIndicator()
-                    : ElevatedButton(
-                  onPressed: _signUp,
-                  child: Text('Sign Up'),
-                ),
+                    : SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _signUp,
+                          child: Text('Sign Up'),
+                        ),
+                      ),
                 SizedBox(height: 16.0),
+
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/');
@@ -183,5 +243,14 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
   }
 }

@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -11,27 +15,71 @@ class _SignInPageState extends State<SignInPage> {
   final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
+  String? _errorMessage;
 
-  void _signIn() async {
+  // Function to save token
+  Future<void> _saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('auth_token', token);
+    // You can also save other user data if needed
+    // await prefs.setString('user_email', _emailController.text.trim());
+  }
+
+  Future<void> _signIn() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
+        _errorMessage = null;
       });
 
-      // Simulate a network call for sign-in
-      await Future.delayed(Duration(seconds: 2));
+      try {
+        final response = await http.post(
+          Uri.parse('https://edulink-hub-backend.onrender.com/auth/login'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'email': _emailController.text.trim(),
+            'password': _passwordController.text,
+          }),
+        );
 
-      setState(() {
-        _isLoading = false;
-      });
+        final responseData = jsonDecode(response.body);
 
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sign In Successful!')),
-      );
+        if (response.statusCode == 200) {
+          // Extract token from response (adjust according to your API response structure)
+          final token = responseData['token'] ??
+              responseData['accessToken'] ??
+              responseData['data']['token'];
 
-      // Navigate to the Home Page
-      Navigator.pushReplacementNamed(context, '/home');
+          if (token != null) {
+            await _saveToken(token);
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Sign In Successful!')),
+            );
+
+            Navigator.pushReplacementNamed(context, '/home');
+          } else {
+            setState(() {
+              _errorMessage = 'Token not received from server';
+            });
+          }
+        } else {
+          setState(() {
+            _errorMessage =
+                responseData['message'] ?? 'Login failed. Please try again.';
+          });
+        }
+      } catch (e) {
+        setState(() {
+          _errorMessage = 'Network error. Please check your connection.';
+        });
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -51,12 +99,18 @@ class _SignInPageState extends State<SignInPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-                  'assets/images/logo.png', // Replace with your logo path
-                  height: 300, // Adjust height as needed
-                  width: 300, // Adjust width as needed
+                  'assets/images/logo.png',
+                  height: 300,
+                  width: 300,
                 ),
-                SizedBox(height: 10),
-                // Email or Username Field
+                if (_errorMessage != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: Text(
+                      _errorMessage!,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -68,17 +122,10 @@ class _SignInPageState extends State<SignInPage> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email or username';
                     }
-                    // Validate email format
-                    final emailRegExp = RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
-                    if (!emailRegExp.hasMatch(value)) {
-                      return 'Please enter a valid email address';
-                    }
                     return null;
                   },
                 ),
                 SizedBox(height: 16.0),
-
-                // Password Field
                 TextFormField(
                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
@@ -88,7 +135,9 @@ class _SignInPageState extends State<SignInPage> {
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
@@ -101,63 +150,37 @@ class _SignInPageState extends State<SignInPage> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
                     }
-                    // Password validation: at least 6 characters, one uppercase letter, one number, one special character
-                    final passwordRegExp = RegExp(
-                        r'^(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)_\+\-=\[\]\{\};:\'",<>\./?\\|`~]).{6,}"
-                            );
-                    if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
-                    }
-                    if (!passwordRegExp.hasMatch(value)) {
-                      return 'Password must contain at least 1 uppercase letter, 1 number, and 1 special character';
-                    }
+                    // if (value.length < 6) {
+                    //   return 'Password must be at least 6 characters';
+                    // }
                     return null;
                   },
                 ),
                 SizedBox(height: 16.0),
-
-                // Forgot Password link
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/forgotPassword');
                   },
                   child: Text('Forget Password?'),
                 ),
-
-                // Sign-in Button or Loading Indicator
+                SizedBox(height: 8.0),
                 _isLoading
                     ? CircularProgressIndicator()
-                    : ElevatedButton(
-                  onPressed: _signIn,
-                  child: Text('Log In'),
-                ),
+                    : SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _signIn,
+                          child: Text('Sign In'),
+                        ),
+                      ),
                 SizedBox(height: 16.0),
-
-                /*// Or sign in with
-                Text('Or sign in with'),
-                SizedBox(height: 16.0),
-
-                // Social Media Sign-in Buttons (Google/Facebook)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      icon: Image.asset('assets/images/google.png', height: 24), // Google icon
-                      onPressed: () {
-                        // Handle Google sign-in
-                      },
-                    ),
-                    IconButton(
-                      icon: Image.asset('assets/images/facebook.png', height: 24), // Facebook icon
-                      onPressed: () {
-                        // Handle Facebook sign-in
-                      },
-                    ),
-                  ],
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/admin-signin');
+                  },
+                  child: Text('Sign in as Admin'),
                 ),
-                SizedBox(height: 16.0),*/
-
-                // Sign-up Link
+                //for admin sign in
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/signup');
@@ -170,5 +193,12 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
