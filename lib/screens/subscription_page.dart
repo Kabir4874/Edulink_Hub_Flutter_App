@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:edulinkhub/screens/funding_page.dart';
 
 class SubscriptionPage extends StatelessWidget {
   @override
@@ -22,18 +23,7 @@ class SubscriptionPage extends StatelessWidget {
               child: ListView(
                 children: [
                   _buildPlanCard(
-                    title: "Free Plan",
-                    price: "\$0/month",
-                    features: [
-                      "✔ Basic Access",
-                      "✔ Limited Features",
-                      "✖ No Premium Support"
-                    ],
-                    color: Colors.grey.shade200,
-                    icon: Icons.lock_open,
-                  ),
-
-                  _buildPlanCard(
+                    context,
                     title: "Premium Plan",
                     price: "\$19.99/month",
                     features: [
@@ -53,13 +43,12 @@ class SubscriptionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildPlanCard({
-    required String title,
-    required String price,
-    required List<String> features,
-    required Color color,
-    required IconData icon,
-  }) {
+  Widget _buildPlanCard(BuildContext context,
+      {required String title,
+        required String price,
+        required List<String> features,
+        required Color color,
+        required IconData icon}) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       color: color,
@@ -90,7 +79,9 @@ class SubscriptionPage extends StatelessWidget {
             SizedBox(height: 15),
             Center(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/subscription_payment');
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   shape: RoundedRectangleBorder(
@@ -105,3 +96,5 @@ class SubscriptionPage extends StatelessWidget {
     );
   }
 }
+
+
