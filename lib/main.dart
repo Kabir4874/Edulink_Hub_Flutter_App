@@ -8,11 +8,15 @@ import 'screens/home_page.dart'; // Home page import
 import 'screens/sign_in_page.dart'; // Sign-in page import
 import 'screens/sign_up_page.dart'; // Sign-up page import
 import 'screens/subscription_page.dart';
-// import 'screens/Admin/admin_sign_in_page.dart'; // Admin sign-in
-// import 'screens/Admin/admin_dashboard_page.dart';
-// import 'screens/Admin/admin_admission_management_page.dart';
-// import 'screens/Admin/admin_funding_management_page.dart';
-// import 'screens/Admin/admin_books_management_page.dart';
+
+import 'screens/payment_page.dart';
+import 'screens/subscription_payment_page.dart';
+import 'screens/Admin/admin_sign_in_page.dart'; // Admin sign-in
+import 'screens/Admin/admin_dashboard_page.dart';
+import 'screens/Admin/admin_admission_management_page.dart';
+import 'screens/Admin/admin_funding_management_page.dart';
+import 'screens/Admin/admin_books_management_page.dart';
+
 
 void main() {
   runApp(EdulearnApp());
@@ -38,11 +42,15 @@ class EdulearnApp extends StatelessWidget {
         '/funding': (context) => FundingPage(), // Placeholder for Funding Page
         '/books': (context) => BooksPage(), // Placeholder for Books Page
         '/subscription': (context) => SubscriptionPage(),
-        // '/admin-signin': (context) => AdminSignInPage(), // ✅ Admin Sign-in Route
-        // '/admin-dashboard': (context) => AdminDashboardPage(),
-        // '/admin-admission-management': (context) => AdminAdmissionManagementPage(),
-        // '/admin-funding-management': (context) => AdminFundingManagementPage(),
-        // '/admin-books-management': (context) => AdminBooksManagementPage(),
+
+        '/subscription_payment': (context) => SubscriptionPaymentPage(),
+        '/admin-signin': (context) => AdminSignInPage(), // ✅ Admin Sign-in Route
+        '/admin-dashboard': (context) => AdminDashboardPage(),
+        '/admin-admission-management': (context) => AdminAdmissionManagementPage(),
+        '/admin-funding-management': (context) => AdminFundingManagementPage(),
+        '/admin-books-management': (context) => AdminBooksManagementPage(),
+
+
       },
     );
   }
