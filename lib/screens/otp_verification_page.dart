@@ -5,8 +5,10 @@ import 'package:http/http.dart' as http;
 
 class OTPVerificationPage extends StatefulWidget {
   final String email;
-
-  const OTPVerificationPage({Key? key, required this.email}) : super(key: key);
+  final bool isFromSignup;
+  const OTPVerificationPage(
+      {Key? key, required this.email, required this.isFromSignup})
+      : super(key: key);
 
   @override
   _OTPVerificationPageState createState() => _OTPVerificationPageState();
@@ -44,7 +46,16 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
       final responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        Navigator.pushReplacementNamed(context, '/home');
+        if (widget.isFromSignup) {
+          Navigator.pushReplacementNamed(context, '/home');
+        } else {
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => ResetPasswordPage(email: widget.email),
+          //   ),
+          // );
+        }
       } else {
         setState(() {
           _errorMessage = responseData['message'] ?? 'OTP verification failed';

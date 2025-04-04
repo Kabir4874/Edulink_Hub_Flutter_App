@@ -60,6 +60,7 @@ class _SignUpPageState extends State<SignUpPage> {
             MaterialPageRoute(
               builder: (context) => OTPVerificationPage(
                 email: _emailController.text.trim(),
+                isFromSignup: true,
               ),
             ),
           );
