@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons:
   jwt_decode:
   fl_chart:
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
