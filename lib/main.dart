@@ -7,6 +7,8 @@ import 'screens/admission_page.dart'; // Admission page import
 import 'screens/funding_page.dart'; // Funding page import
 import 'screens/books_page.dart'; // Books page import
 import 'screens/subscription_page.dart';
+import 'screens/payment_page.dart';
+import 'screens/subscription_payment_page.dart';
 import 'screens/Admin/admin_sign_in_page.dart'; // Admin sign-in
 import 'screens/Admin/admin_dashboard_page.dart';
 import 'screens/Admin/admin_admission_management_page.dart';
@@ -36,6 +38,7 @@ class EdulearnApp extends StatelessWidget {
         '/funding': (context) => FundingPage(), // Placeholder for Funding Page
         '/books': (context) => BooksPage(), // Placeholder for Books Page
         '/subscription': (context) => SubscriptionPage(),
+        '/subscription_payment': (context) => SubscriptionPaymentPage(),
         '/admin-signin': (context) => AdminSignInPage(), // ✅ Admin Sign-in Route
         '/admin-dashboard': (context) => AdminDashboardPage(),
         '/admin-admission-management': (context) => AdminAdmissionManagementPage(),
