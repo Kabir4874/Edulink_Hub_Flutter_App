@@ -20,7 +20,7 @@ class _UniversityDetailsPageState extends State<UniversityDetailsPage> {
   @override
   void initState() {
     super.initState();
-    university = {}; // Initialize university with an empty map
+    university = {};
     fetchUniversityDetails();
   }
 
@@ -37,14 +37,12 @@ class _UniversityDetailsPageState extends State<UniversityDetailsPage> {
     }
   }
 
-  // Function to format date to 'dd/MM/yyyy'
   String formatDate(String dateStr) {
     try {
       DateTime date = DateTime.parse(dateStr);
-      return intl.DateFormat('dd/MM/yyyy')
-          .format(date); // Format the date to 'dd/MM/yyyy'
+      return intl.DateFormat('dd/MM/yyyy').format(date);
     } catch (e) {
-      return dateStr; // Return the raw string if parsing fails
+      return dateStr;
     }
   }
 
@@ -60,14 +58,15 @@ class _UniversityDetailsPageState extends State<UniversityDetailsPage> {
       );
     }
 
-    // Fetch values from the university data safely, use default values if null
     String name = university['name'] ?? 'Unknown University';
     String location = university['location'] ?? 'Location not available';
+    String programType = university['programType'] ?? 'Not Available';
+    String discipline = university['discipline'] ?? 'Not Available';
     String applyDate = university['applicationDate'] ?? 'Not Available';
     String deadline = university['applicationDeadline'] ?? 'Not Available';
     String admitCardDownload =
         university['admitCardDownloadDate'] ?? 'Not Available';
-    String applyLink = university['applyLink'] ?? '#';
+    String applyLink = university['admissionLink'] ?? '#';
     String imageUrl =
         university['imageUrl'] ?? 'https://via.placeholder.com/150';
     List examUnits = university['examUnits'] ?? [];
@@ -84,7 +83,6 @@ class _UniversityDetailsPageState extends State<UniversityDetailsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // University Image with Shadow
               Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
@@ -116,9 +114,9 @@ class _UniversityDetailsPageState extends State<UniversityDetailsPage> {
                 ),
               ),
               SizedBox(height: 20),
-
-              // University Information with Icons
               _infoRow(Icons.location_on, "Location", location),
+              _infoRow(Icons.school, "Program Type", programType),
+              _infoRow(Icons.book, "Discipline", discipline),
               _infoRow(
                   Icons.calendar_today, "Apply Date", formatDate(applyDate)),
               _infoRow(Icons.timer_off, "Deadline", formatDate(deadline),
@@ -126,8 +124,6 @@ class _UniversityDetailsPageState extends State<UniversityDetailsPage> {
               _infoRow(Icons.card_membership, "Admit Card Download",
                   formatDate(admitCardDownload)),
               SizedBox(height: 20),
-
-              // Apply Now Button
               Center(
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
@@ -151,8 +147,6 @@ class _UniversityDetailsPageState extends State<UniversityDetailsPage> {
                 ),
               ),
               SizedBox(height: 20),
-
-              // Exam Units with Stylish Cards
               Text("📝 Exam Units:",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               SizedBox(height: 10),
@@ -165,12 +159,24 @@ class _UniversityDetailsPageState extends State<UniversityDetailsPage> {
                     child: ListTile(
                       leading:
                           Icon(Icons.date_range, color: Colors.blue.shade400),
-                      title: Text("Exam Date: ${formatDate(unit['date'])}",
-                          style: TextStyle(fontSize: 16)),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Unit: ${unit['unit'] ?? 'Unknown Unit'}",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "Exam Date: ${formatDate(unit['date'] ?? '')}",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }).toList(),
-              ),
+              )
             ],
           ),
         ),
@@ -178,7 +184,6 @@ class _UniversityDetailsPageState extends State<UniversityDetailsPage> {
     );
   }
 
-  // Function to Create an Info Row
   Widget _infoRow(IconData icon, String label, String value,
       [Color? textColor]) {
     return Padding(
