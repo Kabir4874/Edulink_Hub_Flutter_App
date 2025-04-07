@@ -78,7 +78,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           padding: const EdgeInsets.all(20.0),
           child: Card(
             elevation: 6,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Padding(
               padding: const EdgeInsets.all(24.0),
               child: Form(
@@ -86,11 +87,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(Icons.lock_reset, size: 70, color: Colors.blue.shade700),
+                    Icon(Icons.lock_reset,
+                        size: 70, color: Colors.blue.shade700),
                     SizedBox(height: 20),
                     Text(
                       'Reset Your Password',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 8),
@@ -105,7 +108,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       decoration: InputDecoration(
                         labelText: 'Email Address',
                         prefixIcon: Icon(Icons.email_outlined),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12)),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -127,20 +131,22 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     _isLoading
                         ? CircularProgressIndicator()
                         : ElevatedButton.icon(
-                      onPressed: _resetPassword,
-                      icon: Icon(Icons.send),
-                      label: Text(
-                        'Send OTP',
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue.shade200,
-                        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 32),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
+                            onPressed: _resetPassword,
+                            icon: Icon(Icons.send),
+                            label: Text(
+                              'Send OTP',
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.black),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue.shade200,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 14, horizontal: 32),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
                     SizedBox(height: 20),
                     TextButton(
                       onPressed: () {

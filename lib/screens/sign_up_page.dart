@@ -65,14 +65,12 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           );
         } else {
-          // Handle error from server
           setState(() {
             _errorMessage = responseData['message'] ??
                 'Registration failed. Please try again.';
           });
         }
       } catch (e) {
-        // Handle network errors
         setState(() {
           _errorMessage = 'Network error. Please check your connection.';
         });
@@ -104,8 +102,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   width: 200,
                 ),
                 SizedBox(height: 5),
-
-                // Error message display
                 if (_errorMessage != null)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
@@ -114,7 +110,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: TextStyle(color: Colors.red),
                     ),
                   ),
-
                 TextFormField(
                   controller: _fullNameController,
                   decoration: InputDecoration(
@@ -130,7 +125,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                 ),
                 SizedBox(height: 16.0),
-
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -150,7 +144,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                 ),
                 SizedBox(height: 16.0),
-
                 TextFormField(
                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
@@ -182,7 +175,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                 ),
                 SizedBox(height: 16.0),
-
                 TextFormField(
                   controller: _confirmPasswordController,
                   obscureText: !_isPasswordVisible,
@@ -202,7 +194,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                 ),
                 SizedBox(height: 16.0),
-
                 IntlPhoneField(
                   decoration: InputDecoration(
                     labelText: 'Phone Number',
@@ -220,7 +211,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                 ),
                 SizedBox(height: 16.0),
-
                 _isLoading
                     ? CircularProgressIndicator()
                     : SizedBox(
@@ -231,7 +221,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                       ),
                 SizedBox(height: 16.0),
-
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/');

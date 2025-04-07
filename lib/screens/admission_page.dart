@@ -87,9 +87,11 @@ class _AdmissionPageState extends State<AdmissionPage> {
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.search),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue.shade300, width: 2.0),
+                  borderSide:
+                      BorderSide(color: Colors.blue.shade300, width: 2.0),
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               ),
               onChanged: (value) => filterUniversities(),
             ),
@@ -118,11 +120,11 @@ class _AdmissionPageState extends State<AdmissionPage> {
                     decoration: InputDecoration(
                       labelText: 'Country',
                       border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                     ),
                   ),
                 ),
-
                 const SizedBox(width: 10),
                 Expanded(
                   child: DropdownButtonFormField<String>(
@@ -142,15 +144,14 @@ class _AdmissionPageState extends State<AdmissionPage> {
                     decoration: InputDecoration(
                       labelText: 'Program Type',
                       border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                     ),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 16),
-
-            // University List
             Expanded(
               child: ListView.builder(
                 itemCount: filteredUniversities.length,
@@ -162,7 +163,6 @@ class _AdmissionPageState extends State<AdmissionPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: ListTile(
-
                       title: Text(filteredUniversities[index]['name']),
                       subtitle: Text(
                           'Location: ${filteredUniversities[index]['location']}'),
