@@ -67,62 +67,94 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue.shade50,
       appBar: AppBar(
         title: Text('Forgot Password'),
+        backgroundColor: Colors.blue.shade400,
+        elevation: 2,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Enter your email address to reset your password',
-                style: TextStyle(fontSize: 16),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  if (!value.contains('@')) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              if (_errorMessage.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
-                  child: Text(
-                    _errorMessage,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-              _isLoading
-                  ? CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: _resetPassword,
-                      child: Text('Reset Password'),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Card(
+            elevation: 6,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(Icons.lock_reset, size: 70, color: Colors.blue.shade700),
+                    SizedBox(height: 20),
+                    Text(
+                      'Reset Your Password',
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
                     ),
-              SizedBox(height: 16),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Back to Sign In'),
+                    SizedBox(height: 8),
+                    Text(
+                      'Enter your email address and we\'ll send you a link to reset your password.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                    ),
+                    SizedBox(height: 30),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelText: 'Email Address',
+                        prefixIcon: Icon(Icons.email_outlined),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        if (!value.contains('@')) {
+                          return 'Please enter a valid email';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    if (_errorMessage.isNotEmpty)
+                      Text(
+                        _errorMessage,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    SizedBox(height: 16),
+                    _isLoading
+                        ? CircularProgressIndicator()
+                        : ElevatedButton.icon(
+                      onPressed: _resetPassword,
+                      icon: Icon(Icons.send),
+                      label: Text(
+                        'Send OTP',
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue.shade200,
+                        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 32),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Back to Sign In',
+                        style: TextStyle(color: Colors.blue.shade700),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
         ),
       ),
