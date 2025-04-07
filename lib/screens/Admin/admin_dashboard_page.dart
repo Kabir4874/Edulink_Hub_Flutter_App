@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:edulinkhub/widget/admin_drawer.dart'; // Import the drawer file
+import 'package:edulinkhub/widget/admin_drawer.dart'; 
 
 class AdminDashboardPage extends StatelessWidget {
   @override
@@ -10,7 +10,7 @@ class AdminDashboardPage extends StatelessWidget {
         title: Text('Admin Dashboard', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.red.shade400,
       ),
-      drawer: AdminDrawer(), // Attach the drawer here
+      drawer: AdminDrawer(), 
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -136,7 +136,7 @@ class AdminDashboardPage extends StatelessWidget {
       crossAxisCount: 2,
       crossAxisSpacing: 16,
       mainAxisSpacing: 16,
-      childAspectRatio: 1.5, // Increase height/width ratio to make buttons larger
+      childAspectRatio: 1.5,
       children: [
         _buildAdminButton(
           context,
@@ -172,32 +172,32 @@ class AdminDashboardPage extends StatelessWidget {
 
   Widget _buildAdminButton(BuildContext context, String title, IconData icon, String route, Color color) {
     return Card(
-      elevation: 4, // Softer shadow for a gentle effect
+      elevation: 4, 
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         onTap: () => Navigator.pushNamed(context, route),
-        splashColor: Colors.blue.withOpacity(0.2), // Soft splash effect
-        highlightColor: Colors.blue.withOpacity(0.1), // Light highlight on tap
+        splashColor: Colors.blue.withOpacity(0.2), 
+        highlightColor: Colors.blue.withOpacity(0.1),
         child: Container(
           decoration: BoxDecoration(
-            color: color, // More vibrant color for better contrast
+            color: color, 
             borderRadius: BorderRadius.circular(16),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(20.0), // Increased padding for larger buttons
+            padding: const EdgeInsets.all(20.0), 
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(icon, size: 50, color: Colors.white), // Larger icon for better visibility
-                SizedBox(height: 10), // More spacing for better readability
+                Icon(icon, size: 50, color: Colors.white),
+                SizedBox(height: 10), 
                 Text(
                   title,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white, // White text for better contrast
+                    color: Colors.white,
                   ),
                 ),
               ],
