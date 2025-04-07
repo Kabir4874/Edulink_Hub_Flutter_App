@@ -49,12 +49,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
         if (widget.isFromSignup) {
           Navigator.pushReplacementNamed(context, '/home');
         } else {
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => ResetPasswordPage(email: widget.email),
-          //   ),
-          // );
+          Navigator.pushNamed(context, '/reset-password');
+
         }
       } else {
         setState(() {
@@ -124,6 +120,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                 Icons.email_outlined,
                 size: 80,
                 color: Colors.blue,
+
               ),
               const SizedBox(height: 20),
               const Text(
@@ -133,6 +130,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+
               const SizedBox(height: 16),
               const Text(
                 "We've sent a verification code to:",
