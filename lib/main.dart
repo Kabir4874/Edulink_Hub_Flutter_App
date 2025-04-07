@@ -1,15 +1,5 @@
 import 'package:edulinkhub/screens/reset_pass_page.dart';
 import 'package:flutter/material.dart';
-
-import 'screens/admission_page.dart';
-import 'screens/books_page.dart';
-import 'screens/forgot_password_page.dart';
-import 'screens/funding_page.dart';
-import 'screens/home_page.dart';
-import 'screens/sign_in_page.dart';
-import 'screens/sign_up_page.dart';
-import 'screens/subscription_page.dart';
-import 'screens/subscription_payment_page.dart';
 // import 'screens/Admin/admin_sign_in_page.dart';
 // import 'screens/Admin/admin_dashboard_page.dart';
 // import 'screens/Admin/admin_admission_management_page.dart';
@@ -20,8 +10,21 @@ import 'screens/subscription_payment_page.dart';
 // import 'screens/Admin/all_scholarship_list_page.dart';
 
 // import 'screens/Admin/admin_books_management_page.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+
+import 'screens/admission_page.dart';
+import 'screens/books_page.dart';
+import 'screens/forgot_password_page.dart';
+import 'screens/funding_page.dart';
+import 'screens/home_page.dart';
+import 'screens/sign_in_page.dart';
+import 'screens/sign_up_page.dart';
+import 'screens/subscription_page.dart';
+import 'screens/subscription_payment_page.dart';
 
 void main() {
+  Stripe.publishableKey =
+      "pk_test_51PmF6FIR1dQbKMRJ28xNPIbFCxHC65QFFomrafKSTy5zGQoGqVFFwGO2USlidniImkfu0Gqy0VmHy6zxl8vJNiTe00ubMN0Mdw";
   runApp(EdulearnApp());
 }
 
