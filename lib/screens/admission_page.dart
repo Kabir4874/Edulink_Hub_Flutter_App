@@ -86,6 +86,12 @@ class _AdmissionPageState extends State<AdmissionPage> {
                 labelText: 'Search Universities',
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.search),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: Colors.blue.shade300, width: 2.0),
+                ),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               ),
               onChanged: (value) => filterUniversities(),
             ),
@@ -98,7 +104,11 @@ class _AdmissionPageState extends State<AdmissionPage> {
                     items: countries.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(
+                          value,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                        ),
                       );
                     }).toList(),
                     onChanged: (value) {
@@ -110,10 +120,12 @@ class _AdmissionPageState extends State<AdmissionPage> {
                     decoration: InputDecoration(
                       labelText: 'Country',
                       border: OutlineInputBorder(),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                     ),
                   ),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 10),
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     value: selectedProgramType,
@@ -132,18 +144,24 @@ class _AdmissionPageState extends State<AdmissionPage> {
                     decoration: InputDecoration(
                       labelText: 'Program Type',
                       border: OutlineInputBorder(),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
                 itemCount: filteredUniversities.length,
                 itemBuilder: (context, index) {
                   return Card(
-                    margin: EdgeInsets.symmetric(vertical: 8),
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: ListTile(
                       title: Text(filteredUniversities[index]['name']),
                       subtitle: Text(

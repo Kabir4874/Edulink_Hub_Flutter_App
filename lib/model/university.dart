@@ -23,28 +23,24 @@ class University {
 
   factory University.fromJson(Map<String, dynamic> json) {
     return University(
-      name: json['name'] ?? '', // Provide default empty string for null values
-      location: json['location'] ??
-          '', // Provide default empty string for null values
+      name: json['name'] ?? '',
+      location: json['location'] ?? '',
       applyDate: json['applicationDate'] != null
           ? DateTime.parse(json['applicationDate'])
-          : DateTime.now(), // Handle null value with current date
+          : DateTime.now(),
       deadline: json['applicationDeadline'] != null
           ? DateTime.parse(json['applicationDeadline'])
-          : DateTime.now(), // Handle null value with current date
-      applyLink: json['admissionLink'] ??
-          '', // Provide default empty string for null values
+          : DateTime.now(),
+      applyLink: json['admissionLink'] ?? '',
       admitCardDownload: json['admitCardDownloadDate'] != null
           ? DateTime.parse(json['admitCardDownloadDate'])
-          : DateTime.now(), // Handle null value with current date
+          : DateTime.now(),
       examUnits: json['examUnits'] != null
           ? List<ExamUnit>.from(
               json['examUnits'].map((examUnit) => ExamUnit.fromJson(examUnit)))
-          : [], // Handle null examUnits array
-      imageUrl: json['imageUrl'] ??
-          '', // Provide default empty string for null values
-      programType: json['programType'] ??
-          '', // Provide default empty string for null values
+          : [],
+      imageUrl: json['imageUrl'] ?? '',
+      programType: json['programType'] ?? '',
     );
   }
 }
@@ -60,10 +56,9 @@ class ExamUnit {
 
   factory ExamUnit.fromJson(Map<String, dynamic> json) {
     return ExamUnit(
-      unit: json['unit'] ?? '', // Provide default empty string for null values
-      date: json['date'] != null
-          ? DateTime.parse(json['date'])
-          : DateTime.now(), // Handle null value with current date
+      unit: json['unit'] ?? '',
+      date:
+          json['date'] != null ? DateTime.parse(json['date']) : DateTime.now(),
     );
   }
 }

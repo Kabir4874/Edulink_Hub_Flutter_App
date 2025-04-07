@@ -47,7 +47,6 @@ class _SignInPageState extends State<SignInPage> {
         final responseData = jsonDecode(response.body);
 
         if (response.statusCode == 200) {
-          // Extract token from response (adjust according to your API response structure)
           final token = responseData['token'] ??
               responseData['accessToken'] ??
               responseData['data']['token'];
@@ -150,9 +149,9 @@ class _SignInPageState extends State<SignInPage> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
                     }
-                    // if (value.length < 6) {
-                    //   return 'Password must be at least 6 characters';
-                    // }
+                    if (value.length < 6) {
+                      return 'Password must be at least 6 characters';
+                    }
                     return null;
                   },
                 ),

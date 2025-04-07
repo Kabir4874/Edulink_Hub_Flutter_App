@@ -1,8 +1,10 @@
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart' as intl;
+
 import 'package:url_launcher/url_launcher.dart';
 
 class UniversityDetailsPage extends StatefulWidget {
@@ -73,7 +75,9 @@ class _UniversityDetailsPageState extends State<UniversityDetailsPage> {
 
     return Scaffold(
       appBar: AppBar(
+
         title: Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
+
         backgroundColor: Colors.blue.shade400,
         elevation: 5,
       ),
@@ -205,3 +209,4 @@ class _UniversityDetailsPageState extends State<UniversityDetailsPage> {
     );
   }
 }
+
