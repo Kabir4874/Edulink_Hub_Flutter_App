@@ -1,46 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sslcommerz/flutter_sslcommerz.dart'; // Import SSLCommerz package
-import 'package:flutter_sslcommerz/model/SSLCommerzInitialization.dart';
-import 'package:flutter_sslcommerz/model/SSLCurrencyType.dart';
-import 'package:flutter_sslcommerz/model/SSLCSdkType.dart';
-import 'package:flutter_sslcommerz/sslcommerz.dart';
+import 'package:flutter_stripe/flutter_stripe.dart'; // Import the Stripe package
 
-class SubscriptionPaymentPage extends StatelessWidget {
-  // Define the price for the subscription
-  double totalPrice = 19.99;
+class SubscriptionPaymentPage extends StatefulWidget {
+  @override
+  _SubscriptionPaymentPageState createState() =>
+      _SubscriptionPaymentPageState();
+}
 
-  // Handle the SSLCommerz payment process
-  Future<void> _handleSslPayment(BuildContext context) async {
+class _SubscriptionPaymentPageState extends State<SubscriptionPaymentPage> {
+  double totalPrice = 20; // Subscription price
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  // Handle Stripe payment
+  Future<void> _handleStripePayment(BuildContext context) async {
     try {
-      // Initialize SSLCommerz with your store credentials and payment details
-      Sslcommerz sslcommerz = Sslcommerz(
-        initializer: SSLCommerzInitialization(
-          store_id: "eduli67f15a9f3f853", // Store ID from SSLCommerz
-          store_passwd: "eduli67f15a9f3f853@ssl", // Store password from SSLCommerz
-          total_amount: totalPrice, // Payment amount
-          currency: SSLCurrencyType.BDT, // Currency type (BDT for Bangladesh Taka)
-          tran_id: DateTime.now().millisecondsSinceEpoch.toString(), // Unique transaction ID
-          product_category: "Digital Product", // Product category
-          sdkType: SSLCSdkType.TESTBOX, // TESTBOX for sandbox environment
-          multi_card_name: "visa,master,bkash", // Supported payment methods
+      // Step 1: Create a PaymentIntent on your backend and get the client secret
+      final clientSecret =
+          await _createPaymentIntent(); // This should be done via your backend
 
+      // Step 2: Initialize the payment sheet
+      await _initPaymentSheet(clientSecret);
+
+      // Step 3: Present the payment sheet to the user
+      await _presentPaymentSheet();
+
+      // If payment was successful, show success dialog
+      _showSuccessDialog(context);
+    } catch (e) {
+      // Handle errors during the payment process
+      print("Error during Stripe payment: $e");
+      _showErrorDialog(context, e.toString());
+    }
+  }
+
+  // Create PaymentIntent on the backend (simulated here with Future)
+  Future<String> _createPaymentIntent() async {
+    // Replace with your backend logic to create a PaymentIntent and get the client secret
+    await Future.delayed(Duration(seconds: 2));
+    return "your_client_secret"; // You should get this from your backend
+  }
+
+  // Initialize the payment sheet with the client secret
+  Future<void> _initPaymentSheet(String clientSecret) async {
+    try {
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret: clientSecret,
+          applePay: true, // Add Apple Pay support if applicable
+          googlePay: true, // Add Google Pay support if applicable
+          style: ThemeMode.light,
+          merchantDisplayName: 'Your Merchant Name',
         ),
       );
-
-      // Start the payment process and open the WebView for SSLCommerz payment
-      final response = await sslcommerz.payNow();
-
-      // Listen to the result and handle different responses
-      if (response != null && response.status == 'VALID') {
-        _showSuccessDialog(context);
-      } else {
-        // If payment status is not VALID, show failure dialog
-        _showFailureDialog(context);
-      }
     } catch (e) {
-      // Handle any errors during the payment process
-      print('Error during payment: $e');
-      _showErrorDialog(context);
+      print("Error initializing payment sheet: $e");
+      throw Exception('Failed to initialize payment sheet');
+    }
+  }
+
+  // Present the payment sheet
+  Future<void> _presentPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet();
+    } on StripeException catch (e) {
+      print("Stripe error: ${e.error.localizedMessage}");
+      throw e.error.localizedMessage;
     }
   }
 
@@ -61,7 +89,8 @@ class SubscriptionPaymentPage extends StatelessWidget {
           TextButton(
             onPressed: () {
               Navigator.pop(context); // Close dialog
-              Navigator.pushReplacementNamed(context, '/funding'); // Navigate to funding page
+              Navigator.pushReplacementNamed(
+                  context, '/funding'); // Navigate to funding page
             },
             child: Text("Go to Funding Page"),
           ),
@@ -70,8 +99,8 @@ class SubscriptionPaymentPage extends StatelessWidget {
     );
   }
 
-  // Show failure dialog
-  void _showFailureDialog(BuildContext context) {
+  // Show failure dialog with error details
+  void _showFailureDialog(BuildContext context, String errorMessage) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -82,7 +111,7 @@ class SubscriptionPaymentPage extends StatelessWidget {
             Text("Payment Failed"),
           ],
         ),
-        content: Text("There was an issue with your payment. Please try again."),
+        content: Text("There was an issue with your payment: $errorMessage"),
         actions: [
           TextButton(
             onPressed: () {
@@ -95,8 +124,8 @@ class SubscriptionPaymentPage extends StatelessWidget {
     );
   }
 
-  // Show error dialog
-  void _showErrorDialog(BuildContext context) {
+  // Show error dialog with unexpected error details
+  void _showErrorDialog(BuildContext context, String errorMessage) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -107,7 +136,7 @@ class SubscriptionPaymentPage extends StatelessWidget {
             Text("Error"),
           ],
         ),
-        content: Text("An unexpected error occurred. Please try again later."),
+        content: Text("An unexpected error occurred: $errorMessage"),
         actions: [
           TextButton(
             onPressed: () {
@@ -132,14 +161,16 @@ class SubscriptionPaymentPage extends StatelessWidget {
       body: Center(
         child: Card(
           elevation: 8,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           margin: EdgeInsets.symmetric(horizontal: 20),
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.workspace_premium, size: 60, color: Colors.amber.shade700),
+                Icon(Icons.workspace_premium,
+                    size: 60, color: Colors.amber.shade700),
                 SizedBox(height: 16),
                 Text(
                   "Complete Your Payment",
@@ -162,13 +193,14 @@ class SubscriptionPaymentPage extends StatelessWidget {
                     SizedBox(width: 4),
                     Text(
                       "Premium Plan: \$19.99/month",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
                 SizedBox(height: 30),
                 ElevatedButton.icon(
-                  onPressed: () => _handleSslPayment(context),
+                  onPressed: () => _handleStripePayment(context),
                   icon: Icon(Icons.lock_open_rounded),
                   label: Text("Pay Now", style: TextStyle(fontSize: 18)),
                   style: ElevatedButton.styleFrom(

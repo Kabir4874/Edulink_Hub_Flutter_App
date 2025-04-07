@@ -39,8 +39,8 @@ dependencies:
   jwt_decode:
   fl_chart:
   intl:
-  flutter_sslcommerz:
   syncfusion_flutter_pdfviewer:
+  flutter_stripe:
 
 dev_dependencies:
   flutter_test:
