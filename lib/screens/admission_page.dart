@@ -1,8 +1,8 @@
 import 'dart:convert';
+
 import 'package:edulinkhub/screens/universitydetailspage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:edulinkhub/widget/app_drawer.dart';
 
 class AdmissionPage extends StatefulWidget {
   @override
@@ -73,15 +73,13 @@ class _AdmissionPageState extends State<AdmissionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admission Page'),
+        title: Text('Admission Page'),
         backgroundColor: Colors.blue.shade300,
       ),
-      drawer: AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Search Bar
             TextField(
               controller: searchController,
               decoration: InputDecoration(
@@ -95,9 +93,7 @@ class _AdmissionPageState extends State<AdmissionPage> {
               ),
               onChanged: (value) => filterUniversities(),
             ),
-            const SizedBox(height: 16),
-
-            // Filter Options (Country & Program Type)
+            SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
@@ -166,14 +162,10 @@ class _AdmissionPageState extends State<AdmissionPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                      title: Text(
-                        filteredUniversities[index]['name'],
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+
+                      title: Text(filteredUniversities[index]['name']),
                       subtitle: Text(
                           'Location: ${filteredUniversities[index]['location']}'),
-                      trailing: Icon(Icons.arrow_forward, color: Colors.blue.shade300),
                       onTap: () {
                         Navigator.push(
                           context,

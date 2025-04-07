@@ -62,8 +62,9 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.money),
             title: Text('Funding Support'),
+            trailing: Icon(Icons.workspace_premium, size: 30, color: Colors.amber.shade700),
             onTap: () {
-              Navigator.pushNamed(context, '/funding');
+              Navigator.pushNamed(context, '/subscription');
             },
           ),
           ListTile(

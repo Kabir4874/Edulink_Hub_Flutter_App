@@ -120,6 +120,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                 Icons.email_outlined,
                 size: 80,
                 color: Colors.blue,
+
               ),
               const SizedBox(height: 20),
               const Text(
@@ -129,6 +130,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+
               const SizedBox(height: 16),
               const Text(
                 "We've sent a verification code to:",
