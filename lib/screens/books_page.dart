@@ -1,33 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:edulinkhub/widget/app_drawer.dart';
 import 'package:edulinkhub/screens/payment_page.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:edulinkhub/screens/book_reading_page.dart';
+import 'package:edulinkhub/model/book.dart'; // Import your Book model
 
 
 
 
 
-class Book {
-  final String id;
-  final String name;
-  final String imageUrl;
-  final double price;
-  final String description;
-  final List<String> reviews;
-  final String pdfUrl;
-  bool isPurchased; // Track purchase status
-
-  Book({
-    required this.id,
-    required this.name,
-    required this.imageUrl,
-    required this.price,
-    required this.description,
-    required this.reviews,
-    required this.pdfUrl,
-    this.isPurchased = false, // Default as not purchased
-  });
-}
 
 
 
@@ -422,24 +402,3 @@ class _BookDescriptionPageState extends State<BookDescriptionPage> {
 
 
 
-// Book Reading Page (After purchase)
-class BookReadingPage extends StatelessWidget {
-  final Book book;
-
-  BookReadingPage({required this.book});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(book.name),
-        backgroundColor: Colors.blue.shade300,
-      ),
-      body: SfPdfViewer.network(
-        book.pdfUrl,
-        canShowScrollHead: true,
-        canShowScrollStatus: true,
-      ),
-    );
-  }
-}

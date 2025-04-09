@@ -1,50 +1,22 @@
+import 'package:edulinkhub/screens/stripe_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sslcommerz/flutter_sslcommerz.dart'; // Import SSLCommerz package
-import 'package:flutter_sslcommerz/model/SSLCommerzInitialization.dart';
-import 'package:flutter_sslcommerz/model/SSLCurrencyType.dart';
-import 'package:flutter_sslcommerz/model/SSLCSdkType.dart';
-import 'package:flutter_sslcommerz/sslcommerz.dart';
 
-class SubscriptionPaymentPage extends StatelessWidget {
-  // Define the price for the subscription
-  double totalPrice = 19.99;
+class SubscriptionPaymentPage extends StatefulWidget {
+  const SubscriptionPaymentPage({super.key});
+  @override
+  State<SubscriptionPaymentPage> createState( ) => _SubscriptionPaymentPageState();
+}
 
-  // Handle the SSLCommerz payment process
-  Future<void> _handleSslPayment(BuildContext context) async {
-    try {
-      // Initialize SSLCommerz with your store credentials and payment details
-      Sslcommerz sslcommerz = Sslcommerz(
-        initializer: SSLCommerzInitialization(
-          store_id: "eduli67f15a9f3f853", // Store ID from SSLCommerz
-          store_passwd: "eduli67f15a9f3f853@ssl", // Store password from SSLCommerz
-          total_amount: totalPrice, // Payment amount
-          currency: SSLCurrencyType.BDT, // Currency type (BDT for Bangladesh Taka)
-          tran_id: DateTime.now().millisecondsSinceEpoch.toString(), // Unique transaction ID
-          product_category: "Digital Product", // Product category
-          sdkType: SSLCSdkType.TESTBOX, // TESTBOX for sandbox environment
-          multi_card_name: "visa,master,bkash", // Supported payment methods
 
-        ),
-      );
+class _SubscriptionPaymentPageState extends State<SubscriptionPaymentPage> {
+  String amount = '5000';
+  String currency = 'USD';
 
-      // Start the payment process and open the WebView for SSLCommerz payment
-      final response = await sslcommerz.payNow();
-
-      // Listen to the result and handle different responses
-      if (response != null && response.status == 'VALID') {
-        _showSuccessDialog(context);
-      } else {
-        // If payment status is not VALID, show failure dialog
-        _showFailureDialog(context);
-      }
-    } catch (e) {
-      // Handle any errors during the payment process
-      print('Error during payment: $e');
-      _showErrorDialog(context);
-    }
+  /*// Simulated payment handler
+  void _handlePayment(BuildContext context) {
+    _showSuccessDialog(context);
   }
 
-  // Show success dialog
   void _showSuccessDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -60,8 +32,8 @@ class SubscriptionPaymentPage extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // Close dialog
-              Navigator.pushReplacementNamed(context, '/funding'); // Navigate to funding page
+              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, '/funding');
             },
             child: Text("Go to Funding Page"),
           ),
@@ -70,7 +42,6 @@ class SubscriptionPaymentPage extends StatelessWidget {
     );
   }
 
-  // Show failure dialog
   void _showFailureDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -86,7 +57,7 @@ class SubscriptionPaymentPage extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // Close dialog
+              Navigator.pop(context);
             },
             child: Text("Try Again"),
           ),
@@ -95,7 +66,6 @@ class SubscriptionPaymentPage extends StatelessWidget {
     );
   }
 
-  // Show error dialog
   void _showErrorDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -111,7 +81,7 @@ class SubscriptionPaymentPage extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // Close dialog
+              Navigator.pop(context);
             },
             child: Text("OK"),
           ),
@@ -119,7 +89,7 @@ class SubscriptionPaymentPage extends StatelessWidget {
       ),
     );
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,14 +102,16 @@ class SubscriptionPaymentPage extends StatelessWidget {
       body: Center(
         child: Card(
           elevation: 8,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16)),
           margin: EdgeInsets.symmetric(horizontal: 20),
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.workspace_premium, size: 60, color: Colors.amber.shade700),
+                Icon(Icons.workspace_premium, size: 60,
+                    color: Colors.amber.shade700),
                 SizedBox(height: 16),
                 Text(
                   "Complete Your Payment",
@@ -162,13 +134,25 @@ class SubscriptionPaymentPage extends StatelessWidget {
                     SizedBox(width: 4),
                     Text(
                       "Premium Plan: \$19.99/month",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
                 SizedBox(height: 30),
                 ElevatedButton.icon(
-                  onPressed: () => _handleSslPayment(context),
+                  onPressed: ()async {
+                    try {
+                      await StripeService.initPaymentSheet(amount, currency);
+                      await StripeService.presentPaymentSheet();
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Error: ${e.toString()}"),
+                        ),
+                      );
+
+                    }
+                  },
                   icon: Icon(Icons.lock_open_rounded),
                   label: Text("Pay Now", style: TextStyle(fontSize: 18)),
                   style: ElevatedButton.styleFrom(
@@ -187,3 +171,5 @@ class SubscriptionPaymentPage extends StatelessWidget {
     );
   }
 }
+
+
