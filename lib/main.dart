@@ -1,17 +1,16 @@
 import 'package:edulinkhub/screens/reset_pass_page.dart';
 import 'package:flutter/material.dart';
-// import 'screens/Admin/admin_sign_in_page.dart';
-// import 'screens/Admin/admin_dashboard_page.dart';
-// import 'screens/Admin/admin_admission_management_page.dart';
-// import 'screens/Admin/admin_admission_list_page.dart';
-// import 'screens/Admin/add_professor_page.dart';
-// import 'screens/Admin/add_scholarship_page.dart';
-// import 'screens/Admin/all_professor_list_page.dart';
-// import 'screens/Admin/all_scholarship_list_page.dart';
-
 // import 'screens/Admin/admin_books_management_page.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
+// import 'screens/Admin/admin_admission_management_page.dart';
+// import 'screens/Admin/admin_admission_list_page.dart';
+import 'screens/Admin/add_professor_page.dart';
+import 'screens/Admin/add_scholarship_page.dart';
+// import 'screens/Admin/admin_sign_in_page.dart';
+import 'screens/Admin/admin_dashboard_page.dart';
+import 'screens/Admin/all_professor_list_page.dart';
+import 'screens/Admin/all_scholarship_list_page.dart';
 import 'screens/admission_page.dart';
 import 'screens/books_page.dart';
 import 'screens/forgot_password_page.dart';
@@ -50,15 +49,19 @@ class EdulearnApp extends StatelessWidget {
         '/subscription_payment': (context) => SubscriptionPaymentPage(),
         '/reset-password': (context) => ResetPasswordPage(),
         // '/admin-signin': (context) => AdminSignInPage(),
-        // '/admin-dashboard': (context) => AdminDashboardPage(),
+        '/admin-dashboard': (context) => AdminDashboardPage(),
         // '/admin-admission-management': (context) => AdminAdmissionManagementPage(),
         // '/admin-admission-list': (context) => AdminAdmissionListPage(admissions: [],),
 
-        // '/add-scholarship': (context) => AddScholarshipPage(),
-        // "/scholarship-list": (context) => AllScholarshipListPage(scholarships: [],),
+        '/add-scholarship': (context) => AddScholarshipPage(),
+        "/scholarship-list": (context) => AllScholarshipListPage(
+              scholarships: [],
+            ),
 
-        // '/add-professor': (context) => AddProfessorPage(),
-        // '/professor-list': (context) => AllProfessorListPage(professors: [],),
+        '/add-professor': (context) => AddProfessorPage(),
+        '/professor-list': (context) => AllProfessorListPage(
+              professors: [],
+            ),
         // '/admin-books-management': (context) => AdminBooksManagementPage(),
       },
     );
