@@ -44,17 +44,13 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
       );
 
       final responseData = jsonDecode(response.body);
-
+      print(response.statusCode);
       if (response.statusCode == 200) {
         if (widget.isFromSignup) {
           Navigator.pushReplacementNamed(context, '/home');
         } else {
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => ResetPasswordPage(email: widget.email),
-          //   ),
-          // );
+          Navigator.pushNamed(context, '/reset-password',
+              arguments: widget.email);
         }
       } else {
         setState(() {

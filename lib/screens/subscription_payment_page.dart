@@ -32,8 +32,10 @@ class _SubscriptionPaymentPageState extends State<SubscriptionPaymentPage> {
         actions: [
           TextButton(
             onPressed: () {
+
               Navigator.pop(context);
               Navigator.pushReplacementNamed(context, '/funding');
+
             },
             child: Text("Go to Funding Page"),
           ),
@@ -42,7 +44,9 @@ class _SubscriptionPaymentPageState extends State<SubscriptionPaymentPage> {
     );
   }
 
+
   void _showFailureDialog(BuildContext context) {
+
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -53,7 +57,7 @@ class _SubscriptionPaymentPageState extends State<SubscriptionPaymentPage> {
             Text("Payment Failed"),
           ],
         ),
-        content: Text("There was an issue with your payment. Please try again."),
+        content: Text("There was an issue with your payment: $errorMessage"),
         actions: [
           TextButton(
             onPressed: () {
@@ -66,7 +70,9 @@ class _SubscriptionPaymentPageState extends State<SubscriptionPaymentPage> {
     );
   }
 
+
   void _showErrorDialog(BuildContext context) {
+
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -77,7 +83,7 @@ class _SubscriptionPaymentPageState extends State<SubscriptionPaymentPage> {
             Text("Error"),
           ],
         ),
-        content: Text("An unexpected error occurred. Please try again later."),
+        content: Text("An unexpected error occurred: $errorMessage"),
         actions: [
           TextButton(
             onPressed: () {
@@ -102,16 +108,20 @@ class _SubscriptionPaymentPageState extends State<SubscriptionPaymentPage> {
       body: Center(
         child: Card(
           elevation: 8,
+
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16)),
+
           margin: EdgeInsets.symmetric(horizontal: 20),
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+
                 Icon(Icons.workspace_premium, size: 60,
                     color: Colors.amber.shade700),
+
                 SizedBox(height: 16),
                 Text(
                   "Complete Your Payment",
@@ -134,13 +144,16 @@ class _SubscriptionPaymentPageState extends State<SubscriptionPaymentPage> {
                     SizedBox(width: 4),
                     Text(
                       "Premium Plan: \$19.99/month",
+
                       style: TextStyle(
                           fontSize: 18, fontWeight: FontWeight.w600),
+
                     ),
                   ],
                 ),
                 SizedBox(height: 30),
                 ElevatedButton.icon(
+
                   onPressed: ()async {
                     try {
                       await StripeService.initPaymentSheet(amount, currency);
