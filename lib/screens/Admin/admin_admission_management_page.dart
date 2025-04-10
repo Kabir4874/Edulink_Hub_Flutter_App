@@ -27,10 +27,9 @@ class _AdminAdmissionManagementPageState
   final TextEditingController _imageUrlController = TextEditingController();
 
   List<Map<String, dynamic>> _examUnits = [];
-  bool _isLoading = false; // Flag for loading state
-  String? _programType; // Store the selected program type
+  bool _isLoading = false;
+  String? _programType;
 
-  // List of program types for the dropdown menu
   final List<String> _programTypes = ['undergraduate', 'postgraduate', 'Ph.D.'];
 
   void _selectDate(
@@ -73,49 +72,40 @@ class _AdminAdmissionManagementPageState
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
-        _isLoading = true; // Start loading
+        _isLoading = true;
       });
 
-      // Convert the date strings to DateTime objects
       DateFormat dateFormat = DateFormat("d/M/yyyy");
 
       DateTime applicationDate = dateFormat.parse(_applyDateController.text);
       DateTime applicationDeadline = dateFormat.parse(_deadlineController.text);
 
-      // For examUnits, we also need to convert their dates
       List<Map<String, dynamic>> examUnits = _examUnits.map((unit) {
         DateTime examDate = dateFormat.parse(unit['date']!.text);
         return {
           "unit": unit['unit']!.text,
-          "date": examDate
-              .toIso8601String(), // Convert DateTime to ISO format string
+          "date": examDate.toIso8601String(),
         };
       }).toList();
 
-      // Convert admitCardDownloadDate to a DateTime object
       DateTime admitCardDownloadDate =
           dateFormat.parse(_admitCardDownloadController.text);
 
-      // Ensure programType is valid and trim any extra spaces
-      String programType = _programType ?? ''; // Ensure it's selected
+      String programType = _programType ?? '';
 
       final newAdmission = {
         "name": _nameController.text.trim(),
         "location": _locationController.text,
-        "programType": programType, // Make sure it's a valid value
+        "programType": programType,
         "discipline": _disciplineController.text,
-        "applicationDate":
-            applicationDate.toIso8601String(), // Convert to ISO string
-        "applicationDeadline":
-            applicationDeadline.toIso8601String(), // Convert to ISO string
+        "applicationDate": applicationDate.toIso8601String(),
+        "applicationDeadline": applicationDeadline.toIso8601String(),
         "admissionLink": _applyLinkController.text,
-        "admitCardDownloadDate":
-            admitCardDownloadDate.toIso8601String(), // Convert to ISO string
+        "admitCardDownloadDate": admitCardDownloadDate.toIso8601String(),
         "examUnits": examUnits,
         "imageUrl": _imageUrlController.text,
       };
 
-      // Send data to backend
       final response = await http.post(
         Uri.parse('https://edulink-hub-backend.onrender.com/university/create'),
         headers: {
@@ -125,16 +115,14 @@ class _AdminAdmissionManagementPageState
       );
 
       setState(() {
-        _isLoading = false; // Stop loading
+        _isLoading = false;
       });
 
       if (response.statusCode == 201) {
-        // Show success message via Snackbar
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('University added successfully!')),
         );
 
-        // Navigate to the admission list page
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -142,7 +130,6 @@ class _AdminAdmissionManagementPageState
           ),
         );
       } else {
-        // Handle error
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to add university admission')),
         );
@@ -250,7 +237,6 @@ class _AdminAdmissionManagementPageState
               _buildTextField("University Name", Icons.school, _nameController),
               _buildTextField(
                   "Location", Icons.location_city, _locationController),
-              // Program Type Dropdown
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 8.0),
                 child: DropdownButtonFormField<String>(

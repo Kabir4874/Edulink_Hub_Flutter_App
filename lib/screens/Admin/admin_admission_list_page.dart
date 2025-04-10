@@ -64,11 +64,9 @@ class _AdminAdmissionListPageState extends State<AdminAdmissionListPage> {
   String formatDate(String dateString) {
     try {
       if (dateString.contains('T')) {
-        // Handle ISO format
         DateTime date = DateTime.parse(dateString);
         return DateFormat('dd MMM yyyy').format(date);
       } else {
-        // Handle d/M/yyyy format
         final DateFormat format = DateFormat('d/M/yyyy');
         DateTime date = format.parse(dateString);
         return DateFormat('dd MMM yyyy').format(date);
@@ -351,7 +349,7 @@ class _AdminAdmissionListPageState extends State<AdminAdmissionListPage> {
       final parsedDate = DateTime(year, month, day);
       return parsedDate.toIso8601String();
     } catch (e) {
-      return date; // Return the original date if parsing fails
+      return date;
     }
   }
 
