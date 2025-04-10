@@ -16,7 +16,8 @@ class AdminDrawer extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 30,
-                  backgroundImage: AssetImage('assets/images/admin_profile.jpg'), 
+                  backgroundImage:
+                      AssetImage('assets/images/admin_profile.jpg'),
                 ),
                 SizedBox(height: 10),
                 Text(
@@ -45,20 +46,19 @@ class AdminDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.add, color: Colors.red.shade600),
-            title: Text('Add Admission'),
+            title: Text('Add University'),
             onTap: () {
               Navigator.pushNamed(context, '/admin-admission-management');
             },
           ),
           ListTile(
             leading: Icon(Icons.list_alt, color: Colors.red.shade600),
-            title: Text('All Admission List'),
+            title: Text('All University List'),
             onTap: () {
               Navigator.pushNamed(
                 context,
                 '/admin-admission-list',
               );
-
             },
           ),
           ListTile(
@@ -103,7 +103,7 @@ class AdminDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/admin-reports');
             },
           ),
-          Divider(), 
+          Divider(),
           ListTile(
             leading: Icon(Icons.exit_to_app, color: Colors.red.shade600),
             title: Text('Logout'),
@@ -117,6 +117,6 @@ class AdminDrawer extends StatelessWidget {
   }
 
   void _logout(BuildContext context) {
-    Navigator.pushReplacementNamed(context, '/');
+    Navigator.pushReplacementNamed(context, '/admin-signin');
   }
 }
