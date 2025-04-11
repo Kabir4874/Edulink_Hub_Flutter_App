@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +31,8 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
 
       try {
         final response = await http.post(
-          Uri.parse('https://edulink-hub-backend.onrender.com/auth/admin-login'),
+          Uri.parse(
+              'https://edulink-hub-backend.onrender.com/auth/admin-login'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -59,7 +61,8 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
           }
         } else {
           setState(() {
-            _errorMessage = responseData['message'] ?? 'Admin login failed. Please try again.';
+            _errorMessage = responseData['message'] ??
+                'Admin login failed. Please try again.';
           });
         }
       } catch (e) {
@@ -148,15 +151,12 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                 _isLoading
                     ? CircularProgressIndicator()
                     : SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: (){
-                      Navigator.pushReplacementNamed(context, '/admin-dashboard');
-
-                    },
-                    child: Text('Admin Sign In'),
-                  ),
-                ),
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _adminSignIn,
+                          child: Text('Admin Sign In'),
+                        ),
+                      ),
               ],
             ),
           ),
